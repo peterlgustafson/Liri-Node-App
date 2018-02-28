@@ -20,15 +20,14 @@ var runOMDB = function (fullMovieName) {
     // Grab or assemble the movie name and store it in a variable called "movieName"
     var movieName = parseInt(process.argv[3]);
     var fullMovieNameArray = process.argv;
-    var fullMovieName = "";
 
     if (fullMovieName === "" || (fullMovieName === undefined)) {
         fullMovieName = "Mr Nobody";
-    }
+    }; 
 
-    for (var i = 3; i < fullMovieNameArray.length; i++) {
-        fullMovieName = fullMovieName + fullMovieNameArray[i] + " ";
-    }
+    // for (var i = 3; i < fullMovieNameArray.length; i++) {
+    //     fullMovieName = fullMovieName + fullMovieNameArray[i] + " ";
+    // };
 
     // console.log(fullMovieName);
 
@@ -57,11 +56,11 @@ var runOMDB = function (fullMovieName) {
             console.log("Language(s): " + responseBodyObject.Language);
             console.log("Plot: " + responseBodyObject.Plot);
             console.log("Actors/Actresses: " + responseBodyObject.Actors);
-        }
+        };
 
     });
 
-}
+};
 
 //For Twitter API
 
@@ -93,7 +92,7 @@ var runTwitter = function () {
 var runSpotify = function (trackSearch) {
     if (trackSearch === "" || (trackSearch === undefined)) {
         trackSearch = "The Sign Ace of Base";
-    }
+    };
     var Spotify = require('node-spotify-api');
 
     var spotify = new Spotify({
