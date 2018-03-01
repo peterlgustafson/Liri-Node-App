@@ -4,7 +4,7 @@ Link to Github repository: https://github.com/peterlgustafson/Liri-Node-App
 
 About: LIRI is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and Recognition Interface, LIRI is a Language Interpretation and Recognition Interface. LIRI will be a command line node app that takes in parameters and gives you back data.
 
-The Game: ![alt "Image of Liri"](/images/liri.png)
+The App: ![alt "Image of Liri"](/images/liri.png)
 
 Description: The user is able to enter the following commands in their terminal and get the following data back.
 - my-tweets -> will return the last 20 tweets and the post date for each tweet on from Peter's test Twitter account
