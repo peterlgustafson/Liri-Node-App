@@ -29,7 +29,7 @@ var runOMDB = function (fullMovieName) {
     };
 
     // Then run a request to the OMDB API with the movie specified
-    var queryUrl = "http://www.omdbapi.com/?t=" + fullMovieName + "&y=&plot=short&apikey=trilogy";
+    var queryUrl = "http://www.omdbapi.com/?t=" + fullMovieName + "&y=&plot=short&tomatoes=true&apikey=trilogy";
 
     // Then create a request to the queryUrl
     request(queryUrl, function (error, response, body) {
@@ -42,14 +42,16 @@ var runOMDB = function (fullMovieName) {
             var responseBodyObject = JSON.parse(body);
 
             // Then log the Title, Release Year, Rating, Country, Language, Plot & Actors for the movie
+            console.log("-------------------------------------------------");
             console.log("Movie title: " + responseBodyObject.Title);
-            console.log("Release year: " + responseBodyObject.Year);
-            console.log("IMDB rating: " + responseBodyObject.Ratings[0].Value);
-            console.log("Rotten Tomatoes rating: " + responseBodyObject.Ratings[1].Value);
+            console.log("Release year: " + responseBodyObject.Released);
+            console.log("IMDB rating: " + responseBodyObject.imdbRating);
+            console.log("Rotten Tomatoes rating: " + responseBodyObject.tomatoRating);
             console.log("Produced in: " + responseBodyObject.Country);
             console.log("Language(s): " + responseBodyObject.Language);
             console.log("Plot: " + responseBodyObject.Plot);
             console.log("Actors/Actresses: " + responseBodyObject.Actors);
+            console.log("-------------------------------------------------");
         };
 
     });
@@ -76,8 +78,10 @@ var runTwitter = function () {
         if (!error) {
             // For Loop to Loop thru all tweets and print text and created at date
             for (var i = 0; i < tweets.length; i++) {
+                console.log("-------------------------------------------------");
                 console.log("Tweet: " + tweets[i].text);
                 console.log("Tweeted on: " + tweets[i].created_at);
+                console.log("-------------------------------------------------");
             }
         }
     });
@@ -103,10 +107,12 @@ var runSpotify = function (trackSearch) {
             return console.log('Error occurred: ' + err);
         }
 
+        console.log("-------------------------------------------------");
         console.log("Artist: " + data.tracks.items[0].artists[0].name);
         console.log("Song Name: " + data.tracks.items[0].name);
         console.log("Link to Preview Song: " + data.tracks.items[0].preview_url);
         console.log("Album Name: " + data.tracks.items[0].album.name);
+        console.log("-------------------------------------------------");
     });
 }
 
