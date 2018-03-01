@@ -25,4 +25,4 @@ Description: The user is able to enter the following commands in their terminal 
 - do-what-it-says -> will take the text within the random.txt file and use it to call one of Liri's commands
      - By default, will search "I Want It That Way" by the Backstreet Boys
 
-Technologies Used: Node.JS, NPM Package Manager & APIs.
+Technologies Used: Node.JS, NPM Package Manager, OMDB API, Spotify API & Twitter API.

@@ -1,6 +1,28 @@
 //To read and set any environment variables with the dotenv package
 require("dotenv").config();
 
+//To Grab API Key info from Keys.JS file
+//For OMDB API...
+var keys = require("./keys.js");
+
+//For Spotify API
+var Spotify = require('node-spotify-api');
+
+var spotify = new Spotify(keys.spotify);
+
+//For Twitter API
+var Twitter = require('twitter');
+
+var client = new Twitter(keys.twitter);
+
+//Function to Console Log all Search Return Data and Append to Log.txt file
+var logWrite = function (inputString) {
+    console.log(inputString);
+    //Function to append file
+    fs.appendFile("./log.txt", inputString + "\n", function (err) {
+    });
+}
+
 //Global Variables for User Command Input and Search
 var userCommand = process.argv[2];
 
@@ -9,9 +31,9 @@ var userSearch = "";
 
 for (var i = 3; i < userInput.length; i++) {
     userSearch += userInput[i] + " ";
-}
+};
 
-//For Movies/OMDB API
+//For OMDB API
 
 //Overall Function to run at Switch Statement based on User Command
 var runOMDB = function (fullMovieName) {
@@ -29,12 +51,12 @@ var runOMDB = function (fullMovieName) {
     };
 
     // Then run a request to the OMDB API with the movie specified
-    var queryUrl = "http://www.omdbapi.com/?t=" + fullMovieName + "&y=&plot=short&tomatoes=true&apikey=trilogy";
+    var queryUrl = "http://www.omdbapi.com/?t=" + fullMovieName + "&y=&plot=short&tomatoes=true&apikey=" + keys.omdb;
 
     // Then create a request to the queryUrl
     request(queryUrl, function (error, response, body) {
         if (error) {
-            console.log(error);
+            logWrite(error);
 
             // If the request is successful
         } else {
@@ -42,20 +64,10 @@ var runOMDB = function (fullMovieName) {
             var responseBodyObject = JSON.parse(body);
 
             // Then log the Title, Release Year, Rating, Country, Language, Plot & Actors for the movie
-            console.log("-------------------------------------------------");
-            console.log("Movie title: " + responseBodyObject.Title);
-            console.log("Release year: " + responseBodyObject.Released);
-            console.log("IMDB rating: " + responseBodyObject.imdbRating);
-            console.log("Rotten Tomatoes rating: " + responseBodyObject.tomatoRating);
-            console.log("Produced in: " + responseBodyObject.Country);
-            console.log("Language(s): " + responseBodyObject.Language);
-            console.log("Plot: " + responseBodyObject.Plot);
-            console.log("Actors/Actresses: " + responseBodyObject.Actors);
-            console.log("-------------------------------------------------");
+            var movieString = "-------------------------------------------------" + "\nMovie title: " + responseBodyObject.Title + "\nRelease year: " + responseBodyObject.Released + "\nIMDB rating: " + responseBodyObject.imdbRating + "\nRotten Tomatoes rating: " + responseBodyObject.tomatoRating + "\nProduced in: " + responseBodyObject.Country + "\nLanguage(s): " + responseBodyObject.Language + "\nPlot: " + responseBodyObject.Plot + "\nActors/Actresses: " + responseBodyObject.Actors + "\n-------------------------------------------------";
+            logWrite(movieString);
         };
-
     });
-
 };
 
 //For Twitter API
@@ -63,25 +75,13 @@ var runOMDB = function (fullMovieName) {
 //Overall Function to run at Switch Statement based on User Command
 var runTwitter = function () {
 
-    var Twitter = require('twitter');
-
-    //For User based authentication
-    var client = new Twitter({
-        consumer_key: process.env.TWITTER_CONSUMER_KEY,
-        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-        access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-        access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-    });
-
     var params = { screen_name: 'peterstestacct', count: 20 };
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             // For Loop to Loop thru all tweets and print text and created at date
             for (var i = 0; i < tweets.length; i++) {
-                console.log("-------------------------------------------------");
-                console.log("Tweet: " + tweets[i].text);
-                console.log("Tweeted on: " + tweets[i].created_at);
-                console.log("-------------------------------------------------");
+                var tweetString = "-------------------------------------------------" + "\nTweet: " + tweets[i].text + "\nTweeted on: " + tweets[i].created_at + "\n-------------------------------------------------";
+                logWrite(tweetString);
             }
         }
     });
@@ -95,24 +95,13 @@ var runSpotify = function (trackSearch) {
     if (trackSearch === "" || (trackSearch === undefined)) {
         trackSearch = "The Sign Ace of Base";
     };
-    var Spotify = require('node-spotify-api');
-
-    var spotify = new Spotify({
-        id: process.env.SPOTIFY_ID,
-        secret: process.env.SPOTIFY_SECRET
-    });
 
     spotify.search({ type: 'track', query: trackSearch }, function (err, data) {
         if (err) {
-            return console.log('Error occurred: ' + err);
+            return logWrite('Error occurred: ' + err);
         }
-
-        console.log("-------------------------------------------------");
-        console.log("Artist: " + data.tracks.items[0].artists[0].name);
-        console.log("Song Name: " + data.tracks.items[0].name);
-        console.log("Link to Preview Song: " + data.tracks.items[0].preview_url);
-        console.log("Album Name: " + data.tracks.items[0].album.name);
-        console.log("-------------------------------------------------");
+        var spotifyString = "-------------------------------------------------" + "\nArtist: " + data.tracks.items[0].artists[0].name + "\nSong Name: " + data.tracks.items[0].name + "\nLink to Preview Song: " + data.tracks.items[0].preview_url + "\nAlbum Name: " + data.tracks.items[0].album.name + "\n-------------------------------------------------";
+        logWrite(spotifyString);
     });
 }
 
