@@ -74,7 +74,7 @@ var runOMDB = function (fullMovieName) {
 
 //Overall Function to run at Switch Statement based on User Command
 var runTwitter = function () {
-
+    //Twitter Search function to search on my test accout and only pull in last 20 tweets
     var params = { screen_name: 'peterstestacct', count: 20 };
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
@@ -95,7 +95,7 @@ var runSpotify = function (trackSearch) {
     if (trackSearch === "" || (trackSearch === undefined)) {
         trackSearch = "The Sign Ace of Base";
     };
-
+    //Spotify Search function
     spotify.search({ type: 'track', query: trackSearch }, function (err, data) {
         if (err) {
             return logWrite('Error occurred: ' + err);
@@ -123,7 +123,7 @@ var checkUserInput = function () {
 //For Do What it Says Command
 var fs = require("fs");
 
-//if user com = do-it
+//if user command is do what it says then read random.txt file and run search
 if (userCommand === "do-what-it-says") {
     //Function to read file
     fs.readFile("./random.txt", "utf8", function (err, data) {
