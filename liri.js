@@ -1,7 +1,9 @@
 //To read and set any environment variables with the dotenv package
 require("dotenv").config();
 
-//Variables for User Input and Search
+//Global Variables for User Command Input and Search
+var userCommand = process.argv[2];
+
 var userInput = process.argv;
 var userSearch = "";
 
@@ -9,33 +11,25 @@ for (var i = 3; i < userInput.length; i++) {
     userSearch += userInput[i] + " ";
 }
 
-var userCommand = process.argv[2];
-
 //For Movies/OMDB API
 
+//Overall Function to run at Switch Statement based on User Command
 var runOMDB = function (fullMovieName) {
 
+    //To make http calls
     var request = require("request");
 
     // Grab or assemble the movie name and store it in a variable called "movieName"
     var movieName = parseInt(process.argv[3]);
     var fullMovieNameArray = process.argv;
 
+    // If Else Statement to Log Mr Nobody as User Command if blank or undefined
     if (fullMovieName === "" || (fullMovieName === undefined)) {
         fullMovieName = "Mr Nobody";
-    }; 
-
-    // for (var i = 3; i < fullMovieNameArray.length; i++) {
-    //     fullMovieName = fullMovieName + fullMovieNameArray[i] + " ";
-    // };
-
-    // console.log(fullMovieName);
+    };
 
     // Then run a request to the OMDB API with the movie specified
     var queryUrl = "http://www.omdbapi.com/?t=" + fullMovieName + "&y=&plot=short&apikey=trilogy";
-
-    // This line is just to help us debug against the actual URL.
-    // console.log(queryUrl);
 
     // Then create a request to the queryUrl
     request(queryUrl, function (error, response, body) {
@@ -64,10 +58,12 @@ var runOMDB = function (fullMovieName) {
 
 //For Twitter API
 
+//Overall Function to run at Switch Statement based on User Command
 var runTwitter = function () {
 
     var Twitter = require('twitter');
 
+    //For User based authentication
     var client = new Twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -80,8 +76,8 @@ var runTwitter = function () {
         if (!error) {
             // For Loop to Loop thru all tweets and print text and created at date
             for (var i = 0; i < tweets.length; i++) {
-                console.log("Tweet text: " + tweets[i].text);
-                console.log("Created Date: " + tweets[i].created_at);
+                console.log("Tweet: " + tweets[i].text);
+                console.log("Tweeted on: " + tweets[i].created_at);
             }
         }
     });
@@ -89,7 +85,9 @@ var runTwitter = function () {
 
 //For Spotify API
 
+//Overall Function to run at Switch Statement based on User Command
 var runSpotify = function (trackSearch) {
+    //If Statement to Log The Sign Ace of Base as User Command if blank or undefined
     if (trackSearch === "" || (trackSearch === undefined)) {
         trackSearch = "The Sign Ace of Base";
     };
@@ -132,6 +130,7 @@ var fs = require("fs");
 
 //if user com = do-it
 if (userCommand === "do-what-it-says") {
+    //Function to read file
     fs.readFile("./random.txt", "utf8", function (err, data) {
         var incomingArray = data.split(",");
         userCommand = incomingArray[0];
